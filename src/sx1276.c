@@ -67,7 +67,7 @@ const fsk_bandwidth_t fsk_bandwidths[] = {
     { 300000, 0x00 }, // Invalid Badwidth
 };
 
-radio_events_t* radio_events;
+static radio_events_t* radio_events;
 
 #define RF_MID_BAND_THRESH                          525000000
 
@@ -89,8 +89,8 @@ static uint8_t sx1276_get_fsk_bandwidthregvalue(uint32_t bandwidth) {
   while( 1 );
 }
 
-int ssPin = 6;
-int dio0  = 4;
+int ssPin = 10;
+int dio0  = 6;
 int RST   = 5;
 
 void sx1276_init_int();
@@ -112,9 +112,6 @@ void sx1276_init(radio_events_t* events) {
   //TimerInit( &RxTimeoutSyncWord, SX1276OnTimeoutIrq );
 
   sx1275_reset();
-
-  uint8_t version = sx1276_read(REG_VERSION);
-  printf("V%x ", version);
 
   sx1276_rxchain_calibration();
 
@@ -992,8 +989,7 @@ void sx1276_on_dio0irq() {
         default:
           sx1276.Settings.State = RF_IDLE;
           if((radio_events != 0) && (radio_events->TxDone != 0)) {
-            //radio_events->TxDone();
-            printf("GSV OUT\n");
+            radio_events->TxDone();
           }
           break;
       }

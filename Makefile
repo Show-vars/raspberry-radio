@@ -16,7 +16,7 @@ compile-stripped:
 	$(CC) $(SOURCES) $(CCARGS) $(STRIPARGS) -o $(OUTPUT)
 
 prog: compile
-	scp $(OUTPUT) root@192.168.1.13:/root/
+	scp $(OUTPUT) root@192.168.1.12:/root/
 
 clean:
 	-@rm $(OUTPUT)
